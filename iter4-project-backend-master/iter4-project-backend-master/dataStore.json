@@ -1,0 +1,62 @@
+{
+  "users": [
+    {
+      "uId": 1,
+      "email": "test1@gmail.com",
+      "nameFirst": "jim",
+      "nameLast": "bob",
+      "handleStr": "jimbob",
+      "password": "6da26ff2bfe75bbf204a9c0777ca3c7c",
+      "channelId": [],
+      "token": [
+        "c27da1af9d8cabccda8247ef2927846815544c6eedb673d9ba6a89da64771373"
+      ],
+      "global_permission": true,
+      "notifications": [],
+      "profileImgUrl": "http://localhost:3417/img/img_1.jpg",
+      "stats": {
+        "channelsJoined": [
+          {
+            "numChannelsJoined": 0,
+            "timeStamp": 1682082194
+          }
+        ],
+        "dmsJoined": [
+          {
+            "numDmsJoined": 0,
+            "timeStamp": 1682082194
+          }
+        ],
+        "messagesSent": [
+          {
+            "numMessagesSent": 0,
+            "timeStamp": 1682082194
+          }
+        ]
+      }
+    }
+  ],
+  "channels": [],
+  "dms": [],
+  "resetCodes": [],
+  "stats": {
+    "channelsExist": [
+      {
+        "numChannelsExist": 0,
+        "timeStamp": 1682082194
+      }
+    ],
+    "dmsExist": [
+      {
+        "numDmsExist": 0,
+        "timeStamp": 1682082194
+      }
+    ],
+    "messagesExist": [
+      {
+        "numMessagesExist": 0,
+        "timeStamp": 1682082194
+      }
+    ]
+  }
+}

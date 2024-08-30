@@ -1,0 +1,102 @@
+
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////        Function For /dm/remove/v1         ////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Remove an existing DM, so all members are no longer in the DM.
+// This can only be done by the original creator of the DM.
+/**
+ * Remove an existing DM.
+ * @param {string} token
+ * @param {number} dmId
+ * @returns nothing
+ */
+export function dmRemoveV1(token: string, dmId: number) {
+  const data = getData();
+  console.log(data);
+  console.log(token, dmId);
+  if (isEmpty(data) || isEmpty(data.dms)) {
+    return { error: 'error' };
+  }
+  // dmId does not refer to a valid DM
+  if (!existingDM(dmId)) {
+    return { error: 'error' };
+  }
+
+  const auth = tokenToUId(token);
+  // token is invalid
+  if (JSON.stringify(auth) === '{}') {
+    return { error: 'error' };
+  }
+  for (const dm of data.dms) {
+    if (dm.id === dmId) {
+      // dmId is valid and the authorised
+      // user is not the original DM creator
+      if (auth.authorisedId !== dm.creatorId) {
+        return { error: 'error' };
+      }
+      // dmId is valid and the authorised user is no longer in the DM
+      let flag = 0;
+      for (const memberId of dm.memberId) {
+        if (memberId === auth.authorisedId) {
+          flag = 1;
+        }
+      }
+      if (flag === 0) {
+        return { error: 'error' };
+      }
+    }
+  }
+  // start remove dm
+  for (let i = 0; i < data.dms.length; ++i) {
+    if (data.dms[i].id === dmId) {
+      data.dms.splice(i, 1);
+      setData(data);
+    }
+  }
+  return {};
+}
+
+
+
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////           Tests For dmRemoveV1             ////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// wait dmCreate to continue
+
+// Unit tests for /dm/remove/v1 //
+
+describe('Unit tests for /dm/remove/v1', () => {
+  let dmId, token;
+  beforeEach(() => {
+    const owner = authRegister('test@gmail.com', 'password', 'jimbo', 'bob');
+    const user1 = authRegister('test1@gmail.com', 'password1', 'jimmothy', 'bob');
+    const user2 = authRegister('test2@gmail.com', 'password2', 'jim', 'bob');
+    dmId = dmCreate(owner.token, [user1.authUserId, user2.authUserId]).dmId;
+    token = owner.token;
+
+  });
+  // Error Output
+  test('non valid DM', () => {
+    expect(dmRemove(token, dmId + 1)).toStrictEqual(ERROR);
+  });
+  test('dmId valid but token is not owner', () => {
+    const randomToken = authRegister('test3@gmail.com', 'password3', 'rando', 'bob').token;
+    expect(dmRemove(randomToken, dmId )).toStrictEqual(ERROR);
+  });
+  
+  test('dmID valid but token no longer in dms', () => {
+    // remove everyone first so no one in the dms
+    dmRemove(token, dmId);
+    expect(dmRemove(token, dmId)).toStrictEqual(ERROR);
+  });
+
+  test('non valid token', () => {
+    expect(dmRemove(token + 1, dmId)).toStrictEqual(ERROR);
+  });
+  // Correct Output
+  test('Correct Output', () => {
+    expect(dmRemove(token, dmId)).toStrictEqual({});
+  });
+});
+
