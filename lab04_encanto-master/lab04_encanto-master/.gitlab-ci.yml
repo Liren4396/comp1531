@@ -1,0 +1,11 @@
+image: comp1531/basic:latest
+
+stages:
+  - checks
+
+testing:
+  stage: checks
+  script:
+    - echo "Please modify your .gitlab-ci.yml file to run test on your code!"
+  only:
+    - master

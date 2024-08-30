@@ -1,0 +1,21 @@
+image: comp1531/basic:latest
+
+stages:
+  - checks
+
+before_script:
+  - echo "This message is echoed at the very start!"
+
+testing:
+  stage: checks
+  script:
+    - echo 'Edit your .gitlab-ci.yml to run tests!'
+  only:
+    - master
+
+linting:
+  stage: checks
+  script:
+    - echo 'Edit your .gitlab-ci.yml to run lint!'
+  only:
+    - master

@@ -1,0 +1,23 @@
+image: comp1531/basic:latest
+
+stages:
+  - checks
+
+before_script:
+  - echo "This message is echoed at the very start!"
+
+testing:
+  stage: checks
+  script:
+    - echo 'Add testing here'
+    - echo 'echo!'
+  only:
+    - master
+
+linting:
+  stage: checks
+  script:
+    - echo 'Add linting here'
+    - echo "echo 'echo!'"
+  only:
+    - master
